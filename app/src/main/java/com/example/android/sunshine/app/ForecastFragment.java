@@ -234,7 +234,6 @@ public class ForecastFragment extends Fragment {
             if (params.length == 0) {
                 return null;
             }
-            // Gist code
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;

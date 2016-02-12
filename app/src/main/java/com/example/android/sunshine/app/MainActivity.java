@@ -1,9 +1,12 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,7 +16,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -54,7 +57,33 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
+        if (id == R.id.action_map) {
+            openPreferredLocationInMap();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openPreferredLocationInMap() {
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        String location = sharedPrefs.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default)
+        );
+
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.e(LOG_TAG, "couldn't call " + location + " , missing app");
+        }
     }
 
     @Override
