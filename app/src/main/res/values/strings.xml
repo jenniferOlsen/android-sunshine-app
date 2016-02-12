@@ -20,5 +20,6 @@
     <string name="pref_units_imperial">imperial</string>
 
     <string name="action_map">Show location on map</string>
+    <string name="action_share">Share</string>
 
 </resources>
